@@ -22,6 +22,10 @@ def test_01():
     with open(f"{FOLDER}/submission/features_scaler.pkl", "rb") as file:
         features_scaler = pickle.load(file)
 
+    expected_columns = getattr(features_scaler, "feature_names_in_", None)
+    if expected_columns is not None:
+        dataset = dataset.reindex(columns=expected_columns, fill_value=0)
+
     standarized_dataset = features_scaler.transform(dataset)
     y_pred = mlp.predict(standarized_dataset)
 
